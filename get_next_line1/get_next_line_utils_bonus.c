@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hrakik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/05 15:23:13 by hrakik            #+#    #+#             */
-/*   Updated: 2022/11/05 15:23:14 by hrakik           ###   ########.fr       */
+/*   Created: 2022/11/09 21:06:44 by hrakik            #+#    #+#             */
+/*   Updated: 2022/11/09 21:06:46 by hrakik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 size_t	ft_strlen(char *s)
 {
@@ -42,6 +42,8 @@ void	*ft_calloc(size_t count, size_t size)
 {
 	void	*p;
 
+	if (size != 0 && count >= SIZE_MAX / size)
+		return (NULL);
 	p = malloc(count * size);
 	if (p == 0)
 		return (0);

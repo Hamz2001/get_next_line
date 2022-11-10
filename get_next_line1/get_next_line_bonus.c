@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hrakik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/05 15:22:53 by hrakik            #+#    #+#             */
-/*   Updated: 2022/11/05 15:22:55 by hrakik           ###   ########.fr       */
+/*   Created: 2022/11/09 21:06:25 by hrakik            #+#    #+#             */
+/*   Updated: 2022/11/09 21:06:27 by hrakik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*ft_line_first(char *line, int fd, int j)
 {
 	char	*str;
 
-	str = ft_calloc ((size_t)BUFFER_SIZE + 1, sizeof(char));
+	str = ft_calloc (BUFFER_SIZE + (size_t)1, sizeof(char));
 	if (str == NULL)
 		return (NULL);
-	while ((ft_strchr(str, '\n')) == 0)
+	while (!(ft_strchr(str, '\n')) && j != 0)
 	{
 		j = read(fd, str, BUFFER_SIZE);
 		if (j == 0)
@@ -90,21 +90,21 @@ char	*ft_befor_backlash(char *line)
 
 char	*get_next_line(int fd)
 {
-	static char	*line;
+	static char	*line[OPEN_MAX];
 	char		*s;
 	int			j;
 
-	j = 0;
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	j = 1;
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd > 10240)
 		return (NULL);
-	line = ft_line_first(line, fd, j);
-	if (line == NULL)
+	line[fd] = ft_line_first(line[fd], fd, j);
+	if (line[fd] == NULL)
 	{
-		free(line);
+		free(line[fd]);
 		return (NULL);
 	}
-	s = ft_befor_backlash(line);
-	line = ft_check_next(line);
+	s = ft_befor_backlash(line[fd]);
+	line[fd] = ft_check_next(line[fd]);
 	if (s[0] == '\0')
 	{
 		free (s);
@@ -116,12 +116,18 @@ char	*get_next_line(int fd)
 // int main()
 // {  
 //     int fd = open("file.txt", O_RDONLY);
+// 	// int fd1 = open("file1.txt", O_RDONLY);
+// 	// int fd2 = open("file2.txt", O_RDONLY);
+// 	// int f3 = open("file3.txt", O_RDONLY);
 // 	printf("%s",get_next_line(fd));
-// // 	// printf("%s",get_next_line(fd));
-// // 	// printf("%s",get_next_line(fd));
-// // 	// printf("%s",get_next_line(fd));
-// // 	// printf("%s",get_next_line(fd));
-// // 	// printf("%s",get_next_line(fd));
-// // 	// printf("%s",get_next_line(fd));
-// //     return 0;
+// 	// printf("%s",get_next_line(fd1));
+// 	// printf("%s",get_next_line(fd2));
+// 	// printf("%s",get_next_line(f3));
+// 	// printf("%s",get_next_line(fd));
+// 	// printf("%s",get_next_line(fd));
+// 	// printf("%s",get_next_line(fd));
+// 	// printf("%s",get_next_line(fd));
+// 	// printf("%s",get_next_line(fd));
+// 	// printf("%s",get_next_line(fd));
+//     return 0;
 // }
